@@ -1,0 +1,28 @@
+{
+  "name": "pluto3",
+  "version": "0.1.0",
+  "description": "h3b1 project backend program",
+  "main": "dist/main.js",
+  "scripts": {
+    "build": "tsc",
+    "start": "node .",
+    "dev": "nodemon -e ts --exec 'tsc && node . || exit 1'"
+  },
+  "keywords": [],
+  "author": "Minhyeok Park<opensource@pmh.codes>",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/express": "^4.17.17",
+    "@typescript-eslint/eslint-plugin": "^5.43.0",
+    "eslint": "^8.38.0",
+    "eslint-config-standard-with-typescript": "^34.0.1",
+    "eslint-plugin-import": "^2.25.2",
+    "eslint-plugin-n": "^15.0.0",
+    "eslint-plugin-promise": "^6.0.0",
+    "nodemon": "^2.0.22",
+    "typescript": "^5.0.4"
+  },
+  "dependencies": {
+    "express": "^4.18.2"
+  }
+}
