@@ -1,8 +1,19 @@
-import express from 'express'
+import 'dotenv/config'
 
-async function run (): Promise<void> {
-  const app = express()
-  app.listen(3000)
-}
+import morgan from 'morgan'
+import express, { json } from 'express'
+import IPRegistRouterBuilder from './routerbuilder/IPRegistRouterBuilder'
 
-void run()
+const {
+  PORT = '3300'
+} = process.env
+const app = express()
+
+app.use(morgan('combined'))
+app.use(json())
+
+app.use('/ip', new IPRegistRouterBuilder().build())
+
+app.listen(PORT, () => {
+  console.log('Server is now on http://127.0.0.1:' + PORT)
+})
