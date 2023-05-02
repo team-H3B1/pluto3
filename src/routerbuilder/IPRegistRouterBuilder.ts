@@ -7,6 +7,7 @@ class IPRegistRouterBuilder implements RouterBuilder {
   private readonly ipRegistrar: IPRegistrar = IPRegistrar.getInstance()
 
   constructor () {
+    this.router.get('/', this.loadIP.bind(this))
     this.router.post('/', this.saveIP.bind(this))
   }
 
@@ -20,6 +21,11 @@ class IPRegistRouterBuilder implements RouterBuilder {
 
     this.ipRegistrar.pushData(ip)
     res.send({ success: true })
+  }
+
+  private loadIP (_: Request, res: Response): void {
+    const ip = this.ipRegistrar.pullData()
+    res.send({ success: ip !== undefined, ip })
   }
 
   public build (): Router {
