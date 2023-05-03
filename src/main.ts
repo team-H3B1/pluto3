@@ -1,8 +1,9 @@
 import 'dotenv/config'
 
 import morgan from 'morgan'
-import express, { json } from 'express'
+import express from 'express'
 import IPRegistRouterBuilder from './routerbuilder/IPRegistRouterBuilder'
+import ConversationRouterBuilder from './routerbuilder/ConversationRouterBuilder'
 
 const {
   PORT = '3300'
@@ -10,9 +11,9 @@ const {
 const app = express()
 
 app.use(morgan('combined'))
-app.use(json())
 
 app.use('/ip', new IPRegistRouterBuilder().build())
+app.use('/audio', new ConversationRouterBuilder().build())
 
 app.listen(PORT, () => {
   console.log('Server is now on http://127.0.0.1:' + PORT)

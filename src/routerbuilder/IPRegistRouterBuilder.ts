@@ -1,4 +1,4 @@
-import { type Request, type Response, Router } from 'express'
+import { type Request, type Response, Router, json } from 'express'
 import type RouterBuilder from './RouterBuilder'
 import IPRegistrar from '../observables/IPRegistrar'
 
@@ -7,6 +7,7 @@ class IPRegistRouterBuilder implements RouterBuilder {
   private readonly ipRegistrar: IPRegistrar = IPRegistrar.getInstance()
 
   constructor () {
+    this.router.use(json())
     this.router.get('/', this.loadIP.bind(this))
     this.router.post('/', this.saveIP.bind(this))
   }
