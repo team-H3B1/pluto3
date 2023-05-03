@@ -13,7 +13,7 @@ const app = express()
 app.use(morgan('combined'))
 
 app.use('/ip', new IPRegistRouterBuilder().build())
-app.use('/audio', new ConversationRouterBuilder().build())
+app.use('/conversations', new ConversationRouterBuilder().build())
 
 app.listen(PORT, () => {
   console.log('Server is now on http://127.0.0.1:' + PORT)

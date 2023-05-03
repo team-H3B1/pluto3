@@ -3,6 +3,7 @@ import type RouterBuilder from './RouterBuilder'
 import multer, { memoryStorage } from 'multer'
 import STTService from '../services/STTService'
 import GPTService from '../services/GPTService'
+import DBService from '../services/DBService'
 
 class ConversationRouterBuilder implements RouterBuilder {
   private readonly router = Router()
@@ -12,9 +13,18 @@ class ConversationRouterBuilder implements RouterBuilder {
 
   private readonly sttService = new STTService()
   private readonly gptService = new GPTService()
+  private readonly dbService = DBService.getInstance()
 
   constructor () {
-    this.router.post('/', this.upload.single('audio'), this.relayAudio)
+    this.router.get('/', this.getConversations.bind(this))
+    this.router.post('/', this.upload.single('audio'), this.relayAudio.bind(this))
+  }
+
+  private getConversations (_: Request, res: Response): void {
+    void (async () => {
+      const conversations = await this.dbService.getConversations()
+      res.send({ success: true, conversations })
+    })()
   }
 
   private relayAudio (req: Request, res: Response): void {
@@ -26,6 +36,11 @@ class ConversationRouterBuilder implements RouterBuilder {
 
       const stt = await this.sttService.convertSTT(req.file.buffer)
       const gpt = await this.gptService.ask(stt)
+
+      await this.dbService.upsertConversation({
+        request: stt,
+        response: gpt
+      })
 
       res.send({ success: true, result: gpt })
     })()
