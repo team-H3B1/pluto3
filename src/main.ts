@@ -4,6 +4,7 @@ import morgan from 'morgan'
 import express from 'express'
 import IPRegistRouterBuilder from './routerbuilder/IPRegistRouterBuilder'
 import ConversationRouterBuilder from './routerbuilder/ConversationRouterBuilder'
+import CVScreenRouterBuilder from './routerbuilder/CVScreenRouterBuilder'
 
 const {
   PORT = '3300'
@@ -13,6 +14,7 @@ const app = express()
 app.use(morgan('combined'))
 
 app.use('/ip', new IPRegistRouterBuilder().build())
+app.use('/cv', new CVScreenRouterBuilder().build())
 app.use('/conversations', new ConversationRouterBuilder().build())
 
 app.listen(PORT, () => {

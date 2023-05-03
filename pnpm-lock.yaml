@@ -10,6 +10,9 @@ dependencies:
   knex:
     specifier: ^2.4.2
     version: 2.4.2(mysql@2.18.1)
+  mjpeg-proxy:
+    specifier: ^0.3.0
+    version: 0.3.0
   morgan:
     specifier: ^1.10.0
     version: 1.10.0
@@ -1790,6 +1793,11 @@ packages:
 
   /minimist@1.2.8:
     resolution: {integrity: sha512-2yyAR8qBkN3YuheJanUpWC5U3bb5osDywNB8RzDVlDwDHbocAJveqqj1u8+SVD7jkWT4yvsHCpWqqWqAxb0zCA==}
+
+  /mjpeg-proxy@0.3.0:
+    resolution: {integrity: sha512-XpdOIPIw/as8djKkJyiT1YaxlM10vqA/KJmymnVl+bZcZYdLrNPYJjkJt+x+5I77vLxyD8QmDbmJrpb63YyRJw==}
+    engines: {node: '>=10'}
+    dev: false
 
   /mkdirp@0.5.6:
     resolution: {integrity: sha512-FP+p8RB8OWpF3YZBCrP5gtADmtXApB5AMLn+vdyA+PyxCjrCs00mjyUozssO33cwDeT3wNGdLxJ5M//YqtHAJw==}

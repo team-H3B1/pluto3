@@ -1,7 +1,7 @@
 import { fetch, FormData } from 'undici'
 
 const {
-  AI_BACKEND_URL = ''
+  AI_BACKEND_URL = 'http://example.com'
 } = process.env
 
 class STTService {
