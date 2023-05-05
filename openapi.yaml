@@ -1,0 +1,247 @@
+# yaml-language-server: $schema=https://raw.githubusercontent.com/OAI/OpenAPI-Specification/main/schemas/v3.1/schema.yaml
+openapi: 3.0.3
+info:
+  title: H3B1 pluto3 backend
+  summary: H3B1 프로젝트를 위한 백엔드 API
+  description: |
+    주요기능:
+      - 임베디드 IP 저장
+      - CV 화면 송출
+      - CV 결과 알림
+      - 음성 인식과 GPT를 통한 대화
+  version: 1.0.0
+paths:
+  /cv/cv.jpg:
+    get:
+      description: AI 서버로 부터 받은 M-JPEG 스트림을 반환합니다.
+      responses:
+        200:
+          description: 정상적으로 스트림을 받아 반환함
+          content:
+            multipart/x-mixed-replace:
+              examples:
+                mjpegstream:
+                  value: |
+                    HTTP/1.1 200 OK
+                    Content-Type: multipart/x-mixed-replace;boundary=example-boundary
+                    Expires: Mon, 01 Jul 1980 00:00:00 GMT
+                    Cache-Control: no-cache, no-store, must-revalidate
+                    Pragma: no-cache
+                    
+                    --example-boundary
+                    Content-Type: image/jpeg
+
+                    ...jpeg bytes
+
+                    
+                    --example-boundary
+                    Content-Type: image/jpeg
+
+                    ...jpeg bytes
+  /cv:
+    post:
+      description: CV에서 위험이 발견되어 보호자에게 알림을 전송합니다.
+      requestBody:
+        description: 보호자에게 표시할 알림 정보입니다.
+        required: true
+        content: 
+          application/json:
+            example:
+              message: 화재를 감지하였습니다.
+            schema:
+              type: object
+              required:
+                - message
+              properties:
+                message:
+                  description: 보호자에게 표시할 경고 메시지
+                  type: string
+      responses:
+        200:
+          description: 알람처리 후 알림 처리 결과
+          content:
+            application/json:
+              examples:
+                success:
+                  description: 알림 처리 성공
+                  value: 
+                    success: true
+                fail:
+                  description: 알림 처리 실패 혹은 message 필드 없음
+                  value:
+                    success: false
+              schema:
+                type: object
+                required:
+                  - success
+                properties:
+                  success:
+                    description: 처리 성공 여부
+                    type: boolean
+  /ip:
+    get:
+      description: 등록된 임베디드 장치의 IP를 반환합니다.
+      responses:
+        200:
+          description: 등록된 IP 정보
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                properties:
+                  success:
+                    description: IP 등록 여부
+                    type: boolean
+                  ip:
+                    description: 임베디드 장치의 IP
+                    type: string
+              examples:
+                success:
+                  description: IP가 등록되어 있음
+                  value:
+                    success: true
+                    ip: 172.16.3.2
+                fail:
+                  description: IP가 등록되있지 않음
+                  value:
+                    success: false
+    post:
+      description: 임베디드 장치의 IP를 등록합니다.
+      requestBody:
+        required: true
+        description: 등록할 IP 정보
+        content: 
+          application/json:
+            example:
+              ip: 172.16.3.2
+            schema:
+              type: object
+              required:
+                - ip
+              properties:
+                ip:
+                  description: 임베디드 장치의 IP
+                  type: string
+      responses:
+        200:
+          description: IP 등록 결과
+          content:
+            application/json:
+              schema:
+                type: object
+                required:
+                  - success
+                properties:
+                  success:
+                    description: IP 등록 결과
+                    type: boolean
+              examples:
+                success:
+                  description: IP가 등록됨
+                  value:
+                    success: true
+                fail:
+                  description: ip 필드가 없음
+                  value:
+                    success: false
+  /conversations:
+    get:
+      description: 대화 목록을 가져옵니다
+      responses:
+        200:
+          description: 대화 목록 가져오기 결과
+          content:
+            application/json:
+              examples:
+                success:
+                  description: 대화 목록을 성공적으로 가져옴
+                  value:
+                    success: true
+                    conversations:
+                      - id: 1
+                        request: 안녕
+                        response: 안녕하세요. pluto3에요
+                        createdAt: 2023-05-05T04:28:16.552Z
+                      - id: 2
+                        request: 뭐해?
+                        response: 당신이랑 대화하고 있죠!
+                        createdAt: 2023-05-05T04:28:50.978Z
+              schema:
+                type: object
+                required:
+                  - success
+                  - conversations
+                properties:
+                  success:
+                    description: 대화목록 가저오기 성공 유무
+                    type: boolean
+                  conversations:
+                    description: 가져온 대화목록
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - id
+                        - request
+                        - response
+                        - createdAt
+                      properties:
+                        id:
+                          description: 대화 ID
+                          type: number
+                        request:
+                          description: 대화 질문
+                          type: string
+                        response:
+                          description: 생성된 대답
+                          type: string
+                        createdAt:
+                          description: 대화 생성 날짜
+                          type: string
+    post:
+      description: 음성을 인식하고 대화를 생성
+      requestBody:
+        required: true
+        description: 음성을 인식할 오디오 파일을 전송
+        content:
+          multipart/form-data:
+            schema:
+              type: object
+              required:
+                - audio
+              properties:
+                audio:
+                  description: 음성을 인식할 mp3 파일
+                  type: string
+                  format: binary
+            encoding:
+              audio:
+                contentType: audio/mpeg
+      responses:
+        200:
+          description: 대화 처리 결과
+          content:
+            application/json:
+              examples:
+                success:
+                  description: 대화를 처리함
+                  value:
+                    success: true
+                    result: 안녕하세요! 무엇을 도와드릴까요?
+                fail:
+                  description: audio 필드가 없음
+                  value:
+                    success: false
+              schema:
+                type: object
+                required:
+                  - success
+                properties:
+                  success:
+                    description: 대화 처리 성공 유무
+                    type: boolean
+                  result:
+                    description: 대화 처리 결과
+                    type: string

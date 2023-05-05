@@ -5,6 +5,7 @@ import express from 'express'
 import IPRegistRouterBuilder from './routerbuilder/IPRegistRouterBuilder'
 import ConversationRouterBuilder from './routerbuilder/ConversationRouterBuilder'
 import CVScreenRouterBuilder from './routerbuilder/CVScreenRouterBuilder'
+import SwaggerRouterBuilder from './routerbuilder/SwaggerRouterBuilder'
 
 const {
   PORT = '3300'
@@ -13,6 +14,7 @@ const app = express()
 
 app.use(morgan('combined'))
 
+app.use('/_docs', new SwaggerRouterBuilder().build())
 app.use('/ip', new IPRegistRouterBuilder().build())
 app.use('/cv', new CVScreenRouterBuilder().build())
 app.use('/conversations', new ConversationRouterBuilder().build())
