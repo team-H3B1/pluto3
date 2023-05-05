@@ -2,8 +2,9 @@
 openapi: 3.0.3
 info:
   title: H3B1 pluto3 backend
-  summary: H3B1 프로젝트를 위한 백엔드 API
   description: |
+    H3B1 프로젝트를 위한 백엔드 API
+
     주요기능:
       - 임베디드 IP 저장
       - CV 화면 송출
