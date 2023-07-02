@@ -1,4 +1,4 @@
-import { type Request, type Response, Router } from 'express'
+import { type Request, type Response, Router, json } from 'express'
 import type RouterBuilder from './RouterBuilder'
 import LoginService from '../services/LoginService'
 
@@ -12,6 +12,7 @@ class LoginRouterBuilder implements RouterBuilder {
   private readonly loginService = new LoginService()
 
   constructor () {
+    this.router.use(json())
     this.router.post('/', this.loginUser.bind(this))
   }
 

@@ -1,4 +1,4 @@
-import { type Request, type Response, Router } from 'express'
+import { type Request, type Response, Router, json } from 'express'
 import type RouterBuilder from './RouterBuilder'
 import DBService from '../services/DBService'
 
@@ -7,6 +7,7 @@ class ScheduleRouterBuilder implements RouterBuilder {
   private readonly dbService = DBService.getInstance()
 
   constructor () {
+    this.router.use(json())
     this.router.get('/', this.getSchedule.bind(this))
     this.router.post('/', this.createSchedule.bind(this))
   }
