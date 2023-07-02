@@ -2,6 +2,7 @@ import knex from 'knex'
 import type Conversation from '../entities/Conversation'
 import { type Optional } from '../utils'
 import type Alert from '../entities/Alert'
+import type Schedule from '../entities/Schedule'
 
 const {
   DATABASE_HOST = 'localhost',
@@ -46,6 +47,14 @@ class DBService {
 
   public async upsertConversation (conversation: Optional<Conversation, 'id' | 'createdAt'>): Promise<void> {
     await this.db<Conversation>('conversations').upsert(conversation)
+  }
+
+  public async getSchedules (date: string): Promise<Schedule[]> {
+    return await this.db<Schedule>('schedules').select('*').where('date', date)
+  }
+
+  public async upsertSchedule (schedule: Optional<Schedule, 'id' | 'createdAt'>): Promise<void> {
+    await this.db<Schedule>('schedules').upsert(schedule)
   }
 }
 

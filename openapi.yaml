@@ -166,6 +166,111 @@ paths:
                   success:
                     description: 처리 성공 여부
                     type: boolean
+  /schedules:
+    get:
+      description: 해당 날짜의 일정을 가져옵니다
+      parameters:
+        - in: query
+          name: date
+          schema:
+            type: string
+          required: true
+          description: '날짜 (형식: YYMMDD, 예: 230101)'
+      responses:
+        200:
+          description: 일정 가져오기 결과
+          content:
+            application/json:
+              examples:
+                success:
+                  description: 일정 목록을 성공적으로 가져옴
+                  value:
+                    success: true
+                    schedules:
+                      - id: 1
+                        content: 밥먹기
+                        date: '230101'
+                        createdAt: 2023-05-05T04:28:16.552Z
+                      - id: 2
+                        content: 병원가기
+                        date: '230101'
+                        createdAt: 2023-05-05T04:28:16.552Z
+              schema:
+                type: object
+                required:
+                  - success
+                  - schedules
+                properties:
+                  success:
+                    description: 일정 목록 가저오기 성공 유무
+                    type: boolean
+                  schedules:
+                    description: 가져온 일정 목록
+                    type: array
+                    items:
+                      type: object
+                      required:
+                        - id
+                        - content
+                        - date
+                        - createdAt
+                      properties:
+                        id:
+                          description: 일정 ID
+                          type: number
+                        content:
+                          description: 일정 내용
+                          type: string
+                        date:
+                          description: '날짜 (형식: YYMMDD, 예: 230101)'
+                          type: string
+                        createdAt:
+                          description: 일정 생성 날짜
+                          type: string
+    post:
+      description: 일정을 등록합니다
+      requestBody:
+        description: 일정 정보입니다.
+        required: true
+        content: 
+          application/json:
+            example:
+              date: 230101
+              content: 병원가기
+            schema:
+              type: object
+              required:
+                - date
+                - content
+              properties:
+                date:
+                  description: '날짜 (형식: YYMMDD, 예: 230101)'
+                  type: string
+                content:
+                  description: 일정 내용
+                  type: string
+      responses:
+        200:
+          description: 일정 등록 결과
+          content:
+            application/json:
+              examples:
+                success:
+                  description: 일정 등록 성공
+                  value: 
+                    success: true
+                fail:
+                  description: 일정 등록 실패 혹은 date, content 필드 없음
+                  value:
+                    success: false
+              schema:
+                type: object
+                required:
+                  - success
+                properties:
+                  success:
+                    description: 처리 성공 여부
+                    type: boolean
   /ip:
     get:
       description: 등록된 임베디드 장치의 IP를 반환합니다.

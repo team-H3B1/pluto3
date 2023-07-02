@@ -13,4 +13,11 @@ create table h3b1.alerts (
   createdAt timestamp default CURRENT_TIMESTAMP()
 );
 
+create table h3b1.schedules (
+  id int unsigned not null auto_increment primary key,
+  content text not null,
+  `date` char(6) not null,
+  createdAt timestamp default CURRENT_TIMESTAMP()
+);
+
 grant all on h3b1.* to h3b1@localhost;

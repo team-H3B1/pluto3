@@ -6,6 +6,7 @@ import IPRegistRouterBuilder from './routerbuilder/IPRegistRouterBuilder'
 import ConversationRouterBuilder from './routerbuilder/ConversationRouterBuilder'
 import CVScreenRouterBuilder from './routerbuilder/CVScreenRouterBuilder'
 import SwaggerRouterBuilder from './routerbuilder/SwaggerRouterBuilder'
+import ScheduleRouterBuilder from './routerbuilder/ScheduleRouterBuilder'
 
 const {
   PORT = '3300'
@@ -17,6 +18,7 @@ app.use(morgan('combined'))
 app.use('/_docs', new SwaggerRouterBuilder().build())
 app.use('/ip', new IPRegistRouterBuilder().build())
 app.use('/cv', new CVScreenRouterBuilder().build())
+app.use('/schedules', new ScheduleRouterBuilder().build())
 app.use('/conversations', new ConversationRouterBuilder().build())
 
 app.listen(PORT, () => {
