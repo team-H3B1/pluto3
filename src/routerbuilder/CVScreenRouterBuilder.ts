@@ -15,6 +15,7 @@ class CVScreenRouterBuilder implements RouterBuilder {
     this.router.use(json())
     this.router.get('/cv.jpg', new MjpegProxy(`${AI_BACKEND_URL}/cv.jpg`).proxyRequest)
     this.router.post('/', this.sendCVAlert.bind(this))
+    this.router.post('/subscribe', this.subscribeAlert.bind(this))
   }
 
   private sendCVAlert (req: Request, res: Response): void {
@@ -27,6 +28,20 @@ class CVScreenRouterBuilder implements RouterBuilder {
       }
 
       await this.firebaseService.sendMessage('안전 경고!', message)
+      res.send({ success: true })
+    })()
+  }
+
+  private subscribeAlert (req: Request, res: Response): void {
+    void (async () => {
+      const { registrationToken } = req.body
+
+      if (registrationToken === undefined) {
+        res.send({ success: false })
+        return
+      }
+
+      await this.firebaseService.subscribe(registrationToken)
       res.send({ success: true })
     })()
   }

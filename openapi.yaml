@@ -79,6 +79,46 @@ paths:
                   success:
                     description: 처리 성공 여부
                     type: boolean
+  /cv/subscribe:
+    post:
+      description: 보호자로 알림을 구독합니다.
+      requestBody:
+        description: 구독을 위한 FCM 정보입니다
+        required: true
+        content: 
+          application/json:
+            example:
+              registrationToken: eJY...
+            schema:
+              type: object
+              required:
+                - registrationToken
+              properties:
+                registrationToken:
+                  description: FCM 구독 토큰
+                  type: string
+      responses:
+        200:
+          description: 알람처리 후 알림 처리 결과
+          content:
+            application/json:
+              examples:
+                success:
+                  description: 알림 처리 성공
+                  value: 
+                    success: true
+                fail:
+                  description: 알림 처리 실패 혹은 message 필드 없음
+                  value:
+                    success: false
+              schema:
+                type: object
+                required:
+                  - success
+                properties:
+                  success:
+                    description: 처리 성공 여부
+                    type: boolean
   /ip:
     get:
       description: 등록된 임베디드 장치의 IP를 반환합니다.
