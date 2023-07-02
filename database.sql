@@ -7,4 +7,10 @@ create table h3b1.conversations (
   createdAt timestamp default CURRENT_TIMESTAMP()
 );
 
+create table h3b1.alerts (
+  id int unsigned not null auto_increment primary key,
+  message text not null,
+  createdAt timestamp default CURRENT_TIMESTAMP()
+);
+
 grant all on h3b1.* to h3b1@localhost;

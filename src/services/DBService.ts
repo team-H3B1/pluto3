@@ -1,6 +1,7 @@
 import knex from 'knex'
 import type Conversation from '../entities/Conversation'
 import { type Optional } from '../utils'
+import type Alert from '../entities/Alert'
 
 const {
   DATABASE_HOST = 'localhost',
@@ -29,6 +30,14 @@ class DBService {
     }
 
     return this.instance
+  }
+
+  public async getAlerts (): Promise<Alert[]> {
+    return await this.db<Alert>('alerts').select('*')
+  }
+
+  public async upsertAlert (alert: Optional<Alert, 'id' | 'createdAt'>): Promise<void> {
+    await this.db<Alert>('alerts').upsert(alert)
   }
 
   public async getConversations (): Promise<Conversation[]> {

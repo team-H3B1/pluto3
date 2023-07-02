@@ -2,6 +2,7 @@ import { type Request, type Response, Router, json } from 'express'
 import type RouterBuilder from './RouterBuilder'
 import { MjpegProxy } from 'mjpeg-proxy'
 import FirebaseService from '../services/FirebaseService'
+import DBService from '../services/DBService'
 
 const {
   AI_BACKEND_URL = 'http://example.com'
@@ -9,13 +10,22 @@ const {
 
 class CVScreenRouterBuilder implements RouterBuilder {
   private readonly router = Router()
+  private readonly dbService = DBService.getInstance()
   private readonly firebaseService = new FirebaseService()
 
   constructor () {
     this.router.use(json())
     this.router.get('/cv.jpg', new MjpegProxy(`${AI_BACKEND_URL}/cv.jpg`).proxyRequest)
+    this.router.get('/', this.getCVAlert.bind(this))
     this.router.post('/', this.sendCVAlert.bind(this))
     this.router.post('/subscribe', this.subscribeAlert.bind(this))
+  }
+
+  private getCVAlert (_: Request, res: Response): void {
+    void (async () => {
+      const alerts = await this.dbService.getAlerts()
+      res.send({ success: true, alerts })
+    })()
   }
 
   private sendCVAlert (req: Request, res: Response): void {
@@ -28,6 +38,8 @@ class CVScreenRouterBuilder implements RouterBuilder {
       }
 
       await this.firebaseService.sendMessage('안전 경고!', message)
+      await this.dbService.upsertAlert({ message })
+
       res.send({ success: true })
     })()
   }
