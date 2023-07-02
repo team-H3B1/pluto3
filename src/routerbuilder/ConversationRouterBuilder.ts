@@ -4,6 +4,7 @@ import multer, { memoryStorage } from 'multer'
 import STTService from '../services/STTService'
 import GPTService from '../services/GPTService'
 import DBService from '../services/DBService'
+import LoginService from '../services/LoginService'
 
 class ConversationRouterBuilder implements RouterBuilder {
   private readonly router = Router()
@@ -16,7 +17,7 @@ class ConversationRouterBuilder implements RouterBuilder {
   private readonly dbService = DBService.getInstance()
 
   constructor () {
-    this.router.get('/', this.getConversations.bind(this))
+    this.router.get('/', LoginService.blockUnlogined, this.getConversations.bind(this))
     this.router.post('/', this.upload.single('audio'), this.relayAudio.bind(this))
   }
 
