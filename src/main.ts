@@ -10,6 +10,7 @@ import CVScreenRouterBuilder from './routerbuilder/CVScreenRouterBuilder'
 import SwaggerRouterBuilder from './routerbuilder/SwaggerRouterBuilder'
 import ScheduleRouterBuilder from './routerbuilder/ScheduleRouterBuilder'
 import LoginService from './services/LoginService'
+import LoginRouterBuilder from './routerbuilder/LoginRouterBuilder'
 
 const {
   PORT = '3300'
@@ -20,6 +21,7 @@ app.use(morgan('combined'))
 app.use(cookieParser())
 
 app.use('/_docs', new SwaggerRouterBuilder().build())
+app.use('/login', new LoginRouterBuilder().build())
 app.use('/ip', new IPRegistRouterBuilder().build())
 app.use('/cv', LoginService.blockUnlogined, new CVScreenRouterBuilder().build())
 app.use('/schedules', LoginService.blockUnlogined, new ScheduleRouterBuilder().build())
