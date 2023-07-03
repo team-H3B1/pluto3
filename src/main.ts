@@ -1,5 +1,6 @@
 import 'dotenv/config'
 
+import cors from 'cors'
 import morgan from 'morgan'
 import express from 'express'
 import cookieParser from 'cookie-parser'
@@ -17,6 +18,7 @@ const {
 } = process.env
 const app = express()
 
+app.use(cors())
 app.use(morgan('combined'))
 app.use(cookieParser())
 
