@@ -3,6 +3,7 @@ import type RouterBuilder from './RouterBuilder'
 import { MjpegProxy } from 'mjpeg-proxy'
 import FirebaseService from '../services/FirebaseService'
 import DBService from '../services/DBService'
+import LoginService from '../services/LoginService'
 
 const {
   AI_BACKEND_URL = 'http://example.com'
@@ -15,10 +16,10 @@ class CVScreenRouterBuilder implements RouterBuilder {
 
   constructor () {
     this.router.use(json())
-    this.router.get('/cv.jpg', new MjpegProxy(`${AI_BACKEND_URL}/cv.jpg`).proxyRequest)
-    this.router.get('/', this.getCVAlert.bind(this))
+    this.router.get('/cv.jpg', LoginService.blockUnlogined, new MjpegProxy(`${AI_BACKEND_URL}/cv.jpg`).proxyRequest)
+    this.router.get('/', LoginService.blockUnlogined, this.getCVAlert.bind(this))
     this.router.post('/', this.sendCVAlert.bind(this))
-    this.router.post('/subscribe', this.subscribeAlert.bind(this))
+    this.router.post('/subscribe', LoginService.blockUnlogined, this.subscribeAlert.bind(this))
   }
 
   private getCVAlert (_: Request, res: Response): void {

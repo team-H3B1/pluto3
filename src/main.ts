@@ -25,7 +25,7 @@ app.use(cookieParser())
 app.use('/_docs', new SwaggerRouterBuilder().build())
 app.use('/login', new LoginRouterBuilder().build())
 app.use('/ip', new IPRegistRouterBuilder().build())
-app.use('/cv', LoginService.blockUnlogined, new CVScreenRouterBuilder().build())
+app.use('/cv', new CVScreenRouterBuilder().build())
 app.use('/schedules', LoginService.blockUnlogined, new ScheduleRouterBuilder().build())
 app.use('/conversations', new ConversationRouterBuilder().build())
 
