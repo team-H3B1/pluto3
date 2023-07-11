@@ -7,13 +7,13 @@ const {
 
 class LoginService {
   public static blockUnlogined (req: Request, res: Response, next: NextFunction): void {
-    const { SESSION_TOKEN } = req.cookies
-    if (typeof SESSION_TOKEN !== 'string') {
+    const { authorization } = req.headers
+    if (typeof authorization !== 'string') {
       res.status(401).send({ success: false, message: 'LOGIN_FIRST' })
       return
     }
 
-    const verify = new this().verifyToken(SESSION_TOKEN)
+    const verify = new this().verifyToken(authorization)
     if (!verify) {
       res.status(403).send({ success: false, message: 'WRONG_TOKEN' })
       return

@@ -45,6 +45,7 @@ paths:
                   description: 로그인 성공
                   value: 
                     success: true
+                    token: eJY...
                 fail:
                   description: 로그인 실패
                   value:
@@ -57,6 +58,9 @@ paths:
                   success:
                     description: 처리 성공 여부
                     type: boolean
+                  token:
+                    description: 토큰 정보 Authorization 헤더에 넣어서 보내주세요
+                    type: string
   /cv/cv.jpg:
     get:
       description: AI 서버로 부터 받은 M-JPEG 스트림을 반환합니다.

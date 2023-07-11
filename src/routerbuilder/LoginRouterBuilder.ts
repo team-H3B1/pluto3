@@ -24,7 +24,7 @@ class LoginRouterBuilder implements RouterBuilder {
     }
 
     const token = this.loginService.createToken()
-    res.cookie('SESSION_TOKEN', token).send({ success: true })
+    res.send({ success: true, token })
   }
 
   public build (): Router {
