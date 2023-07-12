@@ -13,7 +13,7 @@ class LoginService {
       return
     }
 
-    const verify = new this().verifyToken(authorization)
+    const verify = new LoginService().verifyToken(authorization)
     if (!verify) {
       res.status(403).send({ success: false, message: 'WRONG_TOKEN' })
       return
