@@ -37,24 +37,24 @@ class DBService {
     return await this.db<Alert>('alerts').select('*')
   }
 
-  public async upsertAlert (alert: Optional<Alert, 'id' | 'createdAt'>): Promise<void> {
-    await this.db<Alert>('alerts').upsert(alert)
+  public async addAlert (alert: Optional<Alert, 'id' | 'createdAt'>): Promise<void> {
+    await this.db<Alert>('alerts').insert(alert)
   }
 
   public async getConversations (): Promise<Conversation[]> {
     return await this.db<Conversation>('conversations').select('*')
   }
 
-  public async upsertConversation (conversation: Optional<Conversation, 'id' | 'createdAt'>): Promise<void> {
-    await this.db<Conversation>('conversations').upsert(conversation)
+  public async addConversation (conversation: Optional<Conversation, 'id' | 'createdAt'>): Promise<void> {
+    await this.db<Conversation>('conversations').insert(conversation)
   }
 
   public async getSchedules (date: string): Promise<Schedule[]> {
     return await this.db<Schedule>('schedules').select('*').where('date', date)
   }
 
-  public async upsertSchedule (schedule: Optional<Schedule, 'id' | 'createdAt'>): Promise<void> {
-    await this.db<Schedule>('schedules').upsert(schedule)
+  public async addSchedule (schedule: Optional<Schedule, 'id' | 'createdAt'>): Promise<void> {
+    await this.db<Schedule>('schedules').insert(schedule)
   }
 }
 

@@ -39,7 +39,7 @@ class CVScreenRouterBuilder implements RouterBuilder {
       }
 
       await this.firebaseService.sendMessage('안전 경고!', message)
-      await this.dbService.upsertAlert({ message })
+      await this.dbService.addAlert({ message })
 
       res.send({ success: true })
     })()

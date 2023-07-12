@@ -38,7 +38,7 @@ class ConversationRouterBuilder implements RouterBuilder {
       const stt = await this.sttService.convertSTT(req.file.buffer)
       const gpt = await this.gptService.ask(stt)
 
-      await this.dbService.upsertConversation({
+      await this.dbService.addConversation({
         request: stt,
         response: gpt
       })

@@ -27,13 +27,13 @@ class ScheduleRouterBuilder implements RouterBuilder {
 
   private createSchedule (req: Request, res: Response): void {
     void (async () => {
-      const { schedule } = req.body
+      const schedule = req.body
       if (schedule === undefined) {
         res.send({ success: false })
         return
       }
 
-      await this.dbService.upsertSchedule(schedule)
+      await this.dbService.addSchedule(schedule)
       res.send({ success: true })
     })()
   }
